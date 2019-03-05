@@ -51,7 +51,7 @@ On Debian/Ubuntu for example the necessary packages are:
 API
 ---
 
-Will use ctypes.
+Anything importing this should be familiar with the underlying libsecp256k1 api.
 
 Credits
 -------

@@ -72,7 +72,6 @@ jobs:
       targetPath: $(Build.ArtifactStagingDirectory)
   variables:
     BUILD_LINUX_WHEELS: 1
-  condition: False
 - job: BuildForMacOS
   pool:
     vmImage: 'macOS-10.13'
