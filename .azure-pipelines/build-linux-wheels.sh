@@ -22,16 +22,9 @@ for PYBIN in /opt/python/*/bin; do
     fi
 done
 
-ls -l wheelhouse
-
 # Adjust wheel tags
 for whl in wheelhouse/electrumsv_secp256k1*.whl; do
     auditwheel -v repair $whl -w out
 done
 
-echo wheelhouse directory
-ls -l wheelhouse
-
-echo dist directory contents
-ls -l /io/dist
 cp out/*.whl /io/dist

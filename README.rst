@@ -1,14 +1,27 @@
 electrumsv-secp256k1
 ====================
 
-Badges went here..
+::
+
+  Licence: MIT Licence
+  Maintainers: Neil Booth, Roger Taylor
+  Project Lead: Roger Taylor
+  Language: Python (>=3.6)
+  Homepage: https://electrumsv.io/
+
+|azurepipeline_badge|
+
+.. |azurepipeline_badge| image:: https://dev.azure.com/electrumsv/ElectrumSV/_apis/build/status/electrumsv.electrumsv-secp256k1?branchName=master
+    :target: https://dev.azure.com/electrumsv/ElectrumSV/_build/latest?definitionId=3&branchName=master
+    :alt: Build status on Azure Pipelines
 
 -----
 
 This library provides a wrapped pre-compiled
 `libsecp256k1 <https://github.com/bitcoin-core/secp256k1>`_, the heavily
 optimized C library used by `Bitcoin Core <https://github.com/bitcoin/bitcoin>`_
-for operations on elliptic curve secp256k1. It effectively encapsulates a libsecp256k1 fork
+for operations on elliptic curve secp256k1. It effectively encapsulates a
+`libsecp256k1 fork <https://github.com/electrumsv/secp256k1>`_
 and allows ElectrumSV developers to have a vetted build, with selected public modifications,
 available on pypi to treat as a first classed dependency which can be obtained and verified
 against a known hash, like any other Python dependency.
@@ -56,7 +69,8 @@ Anything importing this should be familiar with the underlying libsecp256k1 api.
 Credits
 -------
 
-- Contributors of `coincurve <https://github.com/ofek/coincurve>`_.
+- Contributors of `coincurve <https://github.com/ofek/coincurve>`_. At this time this project is
+  for the most part a adapted and stripped down version of coincurve for Azure Pipelines.
 - Contributors of `libsecp256k1 <https://github.com/bitcoin-core/secp256k1>`_.
 - Contributors of `secp256k1-py <https://github.com/ludbb/secp256k1-py>`_.
   While Coincurve is nearly a complete rewrite, much of the build system

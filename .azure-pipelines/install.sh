@@ -1,4 +1,5 @@
 #!/bin/bash
+# rt12 -- This is not used. Once the macos build has been confirmed, it will be deleted.
 
 set -e
 set -x
