@@ -5,7 +5,7 @@
 /.eggs
 /.idea
 /.tox
-/coincurve.egg-info
+/electrumsv-secp256k1.egg-info
 /build
 /dist
 /docs/build

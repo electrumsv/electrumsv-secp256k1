@@ -1,4 +1,3 @@
-import glob
 import os
 import shutil
 from contextlib import contextmanager
@@ -59,44 +58,9 @@ def build_flags(library, type_, path):
         .split()
     ]
 
-
-def _find_lib():
-    if 'COINCURVE_IGNORE_SYSTEM_LIB' in os.environ:
-        return False
-
-    from cffi import FFI
-
-    ffi = FFI()
-    try:
-        ffi.dlopen("secp256k1")
-    except OSError:
-        if 'LIB_DIR' in os.environ:
-            for path in glob.glob(os.path.join(os.environ['LIB_DIR'], "*secp256k1*")):
-                try:
-                    FFI().dlopen(path)
-                    return True
-                except OSError:
-                    pass
-        # We couldn't locate libsecp256k1 so we'll use the bundled one
-        return False
-    else:
-        # If we got this far then the system library should be good enough
-        return True
-
-
-_has_system_lib = None
-
-
-def has_system_lib():
-    global _has_system_lib
-    if _has_system_lib is None:
-        _has_system_lib = _find_lib()
-    return _has_system_lib
-
-
 def detect_dll():
     here = os.path.dirname(os.path.abspath(__file__))
-    for fn in os.listdir(os.path.join(here, 'coincurve')):
+    for fn in os.listdir(os.path.join(here, 'electrumsv_secp256k1')):
         if fn.endswith('.dll'):
             return True
     return False

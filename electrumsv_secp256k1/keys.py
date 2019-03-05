@@ -1,9 +1,9 @@
 from asn1crypto.keys import ECDomainParameters, ECPointBitString, ECPrivateKey, PrivateKeyAlgorithm, PrivateKeyInfo
 
-from coincurve.context import GLOBAL_CONTEXT
-from coincurve.ecdsa import cdata_to_der, der_to_cdata, deserialize_recoverable, recover, serialize_recoverable
-from coincurve.flags import EC_COMPRESSED, EC_UNCOMPRESSED
-from coincurve.utils import (
+from .context import GLOBAL_CONTEXT
+from .ecdsa import cdata_to_der, der_to_cdata, deserialize_recoverable, recover, serialize_recoverable
+from .flags import EC_COMPRESSED, EC_UNCOMPRESSED
+from .utils import (
     bytes_to_hex,
     bytes_to_int,
     der_to_pem,
@@ -185,7 +185,7 @@ class PublicKey:
             raise ValueError(
                 'Somehow an invalid secret was used. Please '
                 'submit this as an issue here: '
-                'https://github.com/ofek/coincurve/issues/new'
+                'https://github.com/electrumsv/electrumsv_secp256k1/issues/new'
             )
 
         return PublicKey(public_key, context)

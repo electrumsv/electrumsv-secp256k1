@@ -8,12 +8,10 @@ import tarfile
 from distutils import log
 from distutils.command.build_clib import build_clib as _build_clib
 from distutils.command.build_ext import build_ext as _build_ext
-from distutils.errors import DistutilsError
 from io import BytesIO
 import sys
 
 from setuptools import Distribution as _Distribution, setup, find_packages, __version__ as setuptools_version
-from setuptools.command.develop import develop as _develop
 from setuptools.command.egg_info import egg_info as _egg_info
 from setuptools.command.sdist import sdist as _sdist
 
@@ -21,11 +19,10 @@ try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
 except ImportError:
     _bdist_wheel = None
-    pass
 
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from setup_support import absolute, build_flags, detect_dll, has_system_lib
+from setup_support import absolute, build_flags, detect_dll
 
 
 BUILDING_FOR_WINDOWS = detect_dll()
@@ -34,7 +31,7 @@ MAKE = 'gmake' if platform.system() in ['FreeBSD'] else 'make'
 
 # Version of libsecp256k1 to download if none exists in the `libsecp256k1`
 # directory
-LIB_TARBALL_URL = 'https://github.com/bitcoin-core/secp256k1/archive/314a61d72474aa29ff4afba8472553ad91d88e9d.tar.gz'
+LIB_TARBALL_URL = 'https://github.com/electrumsv/secp256k1/archive/314a61d72474aa29ff4afba8472553ad91d88e9d.tar.gz'
 
 
 # We require setuptools >= 3.3
@@ -67,9 +64,9 @@ def download_library(command):
                     tf.extractall()
                 shutil.move(dirname, libdir)
             else:
-                raise SystemExit('Unable to download secp256k1 library: HTTP-Status: %d', status_code)
+                raise SystemExit(f'Unable to download secp256k1 library: HTTP-Status: {status_code}')
         except requests.exceptions.RequestException as e:
-            raise SystemExit('Unable to download secp256k1 library: %s', str(e))
+            raise SystemExit(f'Unable to download secp256k1 library: {e}')
 
 
 class egg_info(_egg_info):
@@ -87,13 +84,10 @@ class sdist(_sdist):
 
 
 if _bdist_wheel:
-
     class bdist_wheel(_bdist_wheel):
         def run(self):
             download_library(self)
             _bdist_wheel.run(self)
-
-
 else:
     bdist_wheel = None
 
@@ -128,10 +122,6 @@ class build_clib(_build_clib):
         return build_flags('libsecp256k1', 'l', os.path.abspath(self.build_temp))
 
     def run(self):
-        if has_system_lib():
-            log.info('Using system library')
-            return
-
         build_temp = os.path.abspath(self.build_temp)
 
         try:
@@ -189,10 +179,6 @@ class build_clib(_build_clib):
 
         self.build_flags['include_dirs'].extend(build_flags('libsecp256k1', 'I', build_temp))
         self.build_flags['library_dirs'].extend(build_flags('libsecp256k1', 'L', build_temp))
-        if not has_system_lib():
-            self.build_flags['define'].append(('CFFI_ENABLE_RECOVERY', None))
-        else:
-            pass
 
 
 class build_ext(_build_ext):
@@ -210,37 +196,27 @@ class build_ext(_build_ext):
         return _build_ext.run(self)
 
 
-class develop(_develop):
-    def run(self):
-        if not has_system_lib():
-            raise DistutilsError(
-                "This library is not usable in 'develop' mode when using the "
-                'bundled libsecp256k1. See README for details.'
-            )
-        _develop.run(self)
-
-
 if BUILDING_FOR_WINDOWS:
-
     class Distribution(_Distribution):
         def is_pure(self):
             return False
 
-    setup_kwargs = dict(package_data={'coincurve': ['*.dll']}, include_package_data=True)
+    setup_kwargs = dict(
+        package_data={'electrumsv_secp256k1': ['*.dll']},
+        include_package_data=True,
+    )
 else:
-
     class Distribution(_Distribution):
         def has_c_libraries(self):
-            return not has_system_lib()
+            return True
 
     setup_kwargs = dict(
         setup_requires=['cffi>=1.3.0', 'requests'],
-        ext_package='coincurve',
+        ext_package='electrumsv_secp256k1',
         cffi_modules=['_cffi_build/build.py:ffi'],
         cmdclass={
             'build_clib': build_clib,
             'build_ext': build_ext,
-            'develop': develop,
             'egg_info': egg_info,
             'sdist': sdist,
             'bdist_wheel': bdist_wheel,
@@ -249,22 +225,22 @@ else:
 
 
 setup(
-    name='coincurve',
-    version='11.0.0',
+    name='electrumsv-secp256k1',
+    version='0.0.2',
 
-    description='Cross-platform Python CFFI bindings for libsecp256k1',
+    description='Cross-platform Python libsecp256k1 for ElectrumSV',
     long_description=open('README.rst', 'r').read(),
     author='Ofek Lev',
     author_email='ofekmeister@gmail.com',
-    maintainer='Ofek Lev',
-    maintainer_email='ofekmeister@gmail.com',
-    url='https://github.com/ofek/coincurve',
-    download_url='https://github.com/ofek/coincurve',
+    maintainer='Roger Taylor',
+    maintainer_email='roger.taylor.email@gmail.com',
+    url='https://github.com/electrumsv/electrumsv-secp256k1',
+    download_url='https://github.com/electrumsv/electrumsv-secp256k1',
     license='MIT/Apache-2.0',
 
-    install_requires=['asn1crypto', 'cffi>=1.3.0'],
+    install_requires=['cffi>=1.3.0'],
 
-    packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1', 'tests')),
+    packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1',)),
 
     distclass=Distribution,
     zip_safe=False,
@@ -274,23 +250,19 @@ setup(
         'crypto',
         'elliptic curves',
         'bitcoin',
-        'ethereum',
-        'cryptocurrency',
+        'bitcoin-sv',
+        'bitcoin sv',
     ),
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Software Development :: Libraries',
         'Topic :: Security :: Cryptography',
     ],

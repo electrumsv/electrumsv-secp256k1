@@ -3,7 +3,7 @@ from binascii import hexlify, unhexlify
 from hashlib import sha256 as _sha256
 from os import urandom
 
-from coincurve.context import GLOBAL_CONTEXT
+from .context import GLOBAL_CONTEXT
 from ._libsecp256k1 import ffi, lib
 
 GROUP_ORDER = (
