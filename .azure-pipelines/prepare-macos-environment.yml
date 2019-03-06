@@ -1,0 +1,17 @@
+steps:
+- script: |
+    # update brew
+    brew update || brew update
+    # Update openssl if necessary
+    brew outdated openssl || brew upgrade openssl
+    # Install packages needed to build lib-secp256k1
+    for pkg in automake libtool pkg-config libffi; do
+        brew list $pkg > /dev/null || brew install $pkg
+        brew outdated --quiet $pkg || brew upgrade $pkg
+    done
+    pip install -U wheel cffi
+    chmod +x .azure-pipelines/*.sh
+  displayName: Prepare general environment
+  enabled: true
+  continueOnError: false
+  failOnStderr: false

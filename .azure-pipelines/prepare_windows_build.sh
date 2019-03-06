@@ -1,6 +1,7 @@
 #!/bin/bash
 
-if [[ "$AGENT_OS" == "Linux" && ${BUILD_LINUX_WHEELS} -eq 1 ]]; then
+if [[ "$AGENT_OS" == "Linux" && "${LINUX_TARGET}" == win* ]]; then
+    echo "Windows preparation for ${LINUX_TARGET}"
     mkdir .hidden
     cp * .hidden -R
     mkdir .hidden/dist

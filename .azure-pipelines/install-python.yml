@@ -1,0 +1,15 @@
+steps:
+- task: UsePythonVersion@0
+  name: AzPy37
+  inputs:
+    versionSpec: 3.7
+    addToPath: true
+    architecture: x64
+  # Outputs to: AZPY37_PYTHONLOCATION
+- task: UsePythonVersion@0
+  name: AzPy36
+  inputs:
+    versionSpec: 3.6
+    addToPath: true
+    architecture: x64
+  # Outputs to: AZPY36_PYTHONLOCATION

@@ -1,0 +1,7 @@
+steps:
+- script: |
+    .azure-pipelines/prepare_windows_build.sh
+  displayName: Prepare for Windows cross-compilation
+  enabled: true
+  continueOnError: false
+  failOnStderr: false

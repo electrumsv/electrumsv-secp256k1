@@ -1,0 +1,9 @@
+steps:
+- script: |
+    sudo apt-get install autoconf automake git libgmp-dev libtool pkg-config
+    pip install -U wheel cffi
+    chmod +x .azure-pipelines/*.sh
+  displayName: Prepare general environment
+  enabled: true
+  continueOnError: false
+  failOnStderr: false

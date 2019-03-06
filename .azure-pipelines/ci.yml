@@ -19,103 +19,82 @@ variables:
   DYLD_FALLBACK_LIBRARY_PATH: ./libsecp256k1_ext/.libs
   LIB_DIR: ./libsecp256k1_ext/.libs
   INCLUDE_DIR: ./libsecp256k1_ext/include
-  PYPI_USERNAME: rt121212121
 
 jobs:
-- job: BuildForWindowsAndLinux
+- job: BuildSourcePackage
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - task: UsePythonVersion@0
-    name: setupPython37
-    inputs:
-      versionSpec: 3.7
-      addToPath: true
-      architecture: x64
-    # Outputs to: SETUPPYTHON37_PYTHONLOCATION
-  - task: UsePythonVersion@0
-    name: setupPython36
-    inputs:
-      versionSpec: 3.6
-      addToPath: true
-      architecture: x64
-    # Outputs to: SETUPPYTHON36_PYTHONLOCATION
-  - script: |
-      sudo apt-get install autoconf automake git libgmp-dev libtool pkg-config
-      pip install -U wheel cffi
-      chmod +x .azure-pipelines/*.sh
-    displayName: Prepare general environment
-    enabled: true
-    continueOnError: false
-    failOnStderr: false
-  - script: |
-      .azure-pipelines/prepare_windows_build.sh
-    displayName: Prepare for Windows cross-compilation
-    enabled: true
-    continueOnError: false
-    failOnStderr: false
-  - script: |
-      .azure-pipelines/deploy.sh
-    displayName: Deploy
-    enabled: true
-    continueOnError: false
-    failOnStderr: false
-  - task: CopyFiles@2
-    inputs:
-      contents: dist/?(*.whl|*.gz)
-      targetFolder: $(Build.ArtifactStagingDirectory)
-      flattenFolders: true
-      OverWrite: true
+  - template: install-python.yml
+  - template: prepare-general-environment.yml
+  - template: build.yml
   - task: PublishPipelineArtifact@0
     inputs:
-      artifactName: 'build-files-winlinux'
+      artifactName: 'build-files-source'
       targetPath: $(Build.ArtifactStagingDirectory)
   variables:
-    BUILD_LINUX_WHEELS: 1
-- job: BuildForMacOS
+    LINUX_TARGET: source
+- job: BuildLinux32Wheels
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - template: install-python.yml
+  - template: prepare-general-environment.yml
+  - template: build.yml
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'build-files-linux32'
+      targetPath: $(Build.ArtifactStagingDirectory)
+  variables:
+    LINUX_TARGET: linux32
+- job: BuildLinux64Wheels
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - template: install-python.yml
+  - template: prepare-general-environment.yml
+  - template: build.yml
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'build-files-linux64'
+      targetPath: $(Build.ArtifactStagingDirectory)
+  variables:
+    LINUX_TARGET: linux64
+- job: BuildWin32Wheels
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - template: install-python.yml
+  - template: prepare-general-environment.yml
+  - template: prepare-windows-environment.yml
+  - template: build.yml
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'build-files-win32'
+      targetPath: $(Build.ArtifactStagingDirectory)
+  variables:
+    LINUX_TARGET: win32
+- job: BuildWin64Wheels
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - template: install-python.yml
+  - template: prepare-general-environment.yml
+  - template: prepare-windows-environment.yml
+  - template: build.yml
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'build-files-win64'
+      targetPath: $(Build.ArtifactStagingDirectory)
+  variables:
+    LINUX_TARGET: win64
+- job: BuildMacOSWheels
   pool:
     vmImage: 'macOS-10.13'
   steps:
-  - task: UsePythonVersion@0
-    name: AzPy37
-    inputs:
-      versionSpec: 3.7
-      addToPath: true
-      architecture: x64
-  - task: UsePythonVersion@0
-    name: AzPy36
-    inputs:
-      versionSpec: 3.6
-      addToPath: true
-      architecture: x64
-  - script: |
-      # update brew
-      brew update || brew update
-      # Update openssl if necessary
-      brew outdated openssl || brew upgrade openssl
-      # Install packages needed to build lib-secp256k1
-      for pkg in automake libtool pkg-config libffi; do
-          brew list $pkg > /dev/null || brew install $pkg
-          brew outdated --quiet $pkg || brew upgrade $pkg
-      done
-      pip install -U wheel cffi
-      chmod +x .azure-pipelines/*.sh
-    displayName: Prepare general environment
-    enabled: true
-    continueOnError: false
-    failOnStderr: false
-  - script: |
-      .azure-pipelines/deploy.sh
-    displayName: Deploy
-    enabled: true
-    continueOnError: false
-    failOnStderr: false
-  - task: CopyFiles@2
-    inputs:
-      contents: dist/?(*.whl|*.gz)
-      targetFolder: $(Build.ArtifactStagingDirectory)
-      flattenFolders: true
-      OverWrite: true
+  - template: install-python.yml
+  - template: prepare-macos-environment.yml
+  - template: build.yml
   - task: PublishPipelineArtifact@0
     inputs:
       artifactName: 'build-files-macos'

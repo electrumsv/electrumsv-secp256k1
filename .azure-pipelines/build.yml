@@ -1,0 +1,13 @@
+steps:
+- script: |
+    .azure-pipelines/build.sh
+  displayName: Build
+  enabled: true
+  continueOnError: false
+  failOnStderr: false
+- task: CopyFiles@2
+  inputs:
+    contents: dist/?(*.whl|*.gz)
+    targetFolder: $(Build.ArtifactStagingDirectory)
+    flattenFolders: true
+    OverWrite: true

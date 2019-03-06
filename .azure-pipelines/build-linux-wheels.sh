@@ -18,7 +18,6 @@ for PYBIN in /opt/python/*/bin; do
 	if [[ ${PYBIN} =~ (cp36|cp37) ]]; then
         echo Building for: ${PYBIN}
 	    ${PYBIN}/pip wheel /io/ -w wheelhouse/
-        # rm -rf /io/dist/*
     fi
 done
 
