@@ -3,7 +3,7 @@ electrumsv-secp256k1
 
 ::
 
-  Licence: MIT Licence
+  Licence: MIT Licence / Apache v2.0 (dual licensed)
   Maintainers: Neil Booth, Roger Taylor
   Project Lead: Roger Taylor
   Language: Python (>=3.6)

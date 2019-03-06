@@ -3,8 +3,23 @@ History
 
 Important changes are emphasized.
 
-master
-^^^^^^
+Project: electrumsv-secp256k1
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+0.9.1
+^^^^^
+
+- Remove Python-based constants, which were identically present on the imported library.
+
+0.9.0
+^^^^^
+
+- First pypi release.
+- Stripped down API so that this package just provides mostly raw library access and context
+  creation.
+
+Project: coincurve
+^^^^^^^^^^^^^^^^^^
 
 11.0.0
 ^^^^^^
