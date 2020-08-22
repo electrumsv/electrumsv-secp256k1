@@ -7,9 +7,9 @@ steps:
     architecture: x64
   # Outputs to: AZPY37_PYTHONLOCATION
 - task: UsePythonVersion@0
-  name: AzPy36
+  name: AzPy38
   inputs:
-    versionSpec: 3.6
+    versionSpec: 3.8
     addToPath: true
     architecture: x64
-  # Outputs to: AZPY36_PYTHONLOCATION
+  # Outputs to: AZPY38_PYTHONLOCATION

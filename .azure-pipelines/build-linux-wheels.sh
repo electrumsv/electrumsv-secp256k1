@@ -15,7 +15,7 @@ mkdir out
 
 # Compile wheels
 for PYBIN in /opt/python/*/bin; do
-	if [[ ${PYBIN} =~ (cp36|cp37) ]]; then
+	if [[ ${PYBIN} =~ (cp37|cp38) ]]; then
         echo Building for: ${PYBIN}
 	    ${PYBIN}/pip wheel /io/ -w wheelhouse/
     fi
