@@ -13,3 +13,10 @@ steps:
     addToPath: true
     architecture: x64
   # Outputs to: AZPY38_PYTHONLOCATION
+- task: UsePythonVersion@0
+  name: AzPy39
+  inputs:
+    versionSpec: 3.9
+    addToPath: true
+    architecture: x64
+  # Outputs to: AZPY39_PYTHONLOCATION
