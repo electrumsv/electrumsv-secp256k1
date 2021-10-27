@@ -13,17 +13,13 @@ mkdir dist
 if [[ "$AGENT_OS" == "Linux" ]]; then
     if [[ "${LINUX_TARGET}" == "source" ]]; then
         python setup.py sdist
-    elif [[ "${LINUX_TARGET}" == "linux32" ]]; then
-        linux32 docker run --rm -e BUILD_GMP_CPU="i686" -v $(pwd):/io quay.io/pypa/manylinux1_i686 /io/.azure-pipelines/build-linux-wheels.sh
     elif [[ "${LINUX_TARGET}" == "linux64" ]]; then
-        docker run --rm -e BUILD_GMP_CPU="amd64"  -v $(pwd):/io quay.io/pypa/manylinux1_x86_64 /io/.azure-pipelines/build-linux-wheels.sh
-    elif [[ "${LINUX_TARGET}" == "win32" ]]; then
-        .azure-pipelines/build_windows_wheels.sh
+        docker run --rm -e BUILD_GMP_CPU="amd64"  -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 /io/.azure-pipelines/build-linux-wheels.sh
     elif [[ "${LINUX_TARGET}" == "win64" ]]; then
         .azure-pipelines/build_windows_wheels.sh
     fi
 elif [[ "$AGENT_OS" == "Darwin" ]]; then
-    for AZPYPATH in $AZPY39_PYTHONLOCATION $AZPY38_PYTHONLOCATION $AZPY37_PYTHONLOCATION; do
+    for AZPYPATH in $AZPY310_PYTHONLOCATION $AZPY39_PYTHONLOCATION $AZPY38_PYTHONLOCATION $AZPY37_PYTHONLOCATION; do
         # Make sure we can build and "fix" the wheel.
         $AZPYPATH/python -m pip install delocate wheel
         # Create directories for the built and fixed wheels.

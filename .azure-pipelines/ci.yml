@@ -23,7 +23,7 @@ variables:
 jobs:
 - job: BuildSourcePackage
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - template: install-python.yml
   - template: prepare-general-environment.yml
@@ -34,22 +34,9 @@ jobs:
       targetPath: $(Build.ArtifactStagingDirectory)
   variables:
     LINUX_TARGET: source
-- job: BuildLinux32Wheels
-  pool:
-    vmImage: 'ubuntu-16.04'
-  steps:
-  - template: install-python.yml
-  - template: prepare-general-environment.yml
-  - template: build.yml
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: 'build-files-linux32'
-      targetPath: $(Build.ArtifactStagingDirectory)
-  variables:
-    LINUX_TARGET: linux32
 - job: BuildLinux64Wheels
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - template: install-python.yml
   - template: prepare-general-environment.yml
@@ -60,23 +47,9 @@ jobs:
       targetPath: $(Build.ArtifactStagingDirectory)
   variables:
     LINUX_TARGET: linux64
-- job: BuildWin32Wheels
-  pool:
-    vmImage: 'ubuntu-16.04'
-  steps:
-  - template: install-python.yml
-  - template: prepare-general-environment.yml
-  - template: prepare-windows-environment.yml
-  - template: build.yml
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: 'build-files-win32'
-      targetPath: $(Build.ArtifactStagingDirectory)
-  variables:
-    LINUX_TARGET: win32
 - job: BuildWin64Wheels
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - template: install-python.yml
   - template: prepare-general-environment.yml

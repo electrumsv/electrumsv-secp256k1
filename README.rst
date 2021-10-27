@@ -36,7 +36,7 @@ Table of Contents
 Features
 --------
 
-- Linux, macOS, and Windows all have binary packages for both 64 and 32-bit architectures
+- Linux, macOS, and Windows all have binary packages for 64 bit architectures only.
 - Linux & macOS use GMP for faster computation
 - Implements a fix for `<https://bugs.python.org/issue28150>`_ to support Python 3.6+ on macOS
 
