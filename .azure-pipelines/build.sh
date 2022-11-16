@@ -4,7 +4,8 @@ set -e -x
 
 echo "deploy BUILD_SOURCESDIRECTORY=$BUILD_SOURCESDIRECTORY"
 
-python setup.py install
+pip install .
+# python setup.py install
 
 # remove any left over files from previous steps
 rm -rf build dist
@@ -21,11 +22,13 @@ if [[ "$AGENT_OS" == "Linux" ]]; then
 elif [[ "$AGENT_OS" == "Darwin" ]]; then
     for AZPYPATH in $AZPY311_PYTHONLOCATION $AZPY310_PYTHONLOCATION $AZPY39_PYTHONLOCATION $AZPY38_PYTHONLOCATION $AZPY37_PYTHONLOCATION; do
         # Make sure we can build and "fix" the wheel.
-        $AZPYPATH/python -m pip install delocate wheel
+        $AZPYPATH/python -m pip install delocate wheel --disable-pip-version-check
         # Create directories for the built and fixed wheels.
         mkdir dist_wheels/ fixed_wheels/
         # Build the wheel for the local OS.
+        echo "running pip wheel"
         $AZPYPATH/python -m pip wheel . --wheel-dir dist_wheels/
+        echo "running delocate-wheel"
         # Make the wheel relocatable to another OS.
         $AZPYPATH/bin/delocate-wheel \
             --check-archs \
