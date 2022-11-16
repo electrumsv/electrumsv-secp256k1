@@ -44,7 +44,7 @@ Installation
 ------------
 
 electrumsv-secp256k1 is distributed on PyPI and is available on Linux/macOS and Windows and
-supports Python 3.6 and Python 3.7.
+supports Python 3.8, 3.9, 3.10 and 3.11.
 
 .. code-block:: bash
 

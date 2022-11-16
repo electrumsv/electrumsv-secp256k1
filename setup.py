@@ -107,8 +107,8 @@ class build_clib(_build_clib):
         download_library(self)
 
         return [
-            absolute(os.path.join(root, filename))
-            for root, _, filenames in os.walk(absolute('libsecp256k1'))
+            os.path.join(root, filename)
+            for root, _, filenames in os.walk('libsecp256k1')
             for filename in filenames
         ]
 
@@ -119,7 +119,8 @@ class build_clib(_build_clib):
         raise Exception('check_library_list')
 
     def get_library_names(self):
-        return build_flags('libsecp256k1', 'l', os.path.abspath(self.build_temp))
+        d_path = os.path.join(self.build_temp, "libsecp256k1")
+        return build_flags('libsecp256k1', 'l', d_path)
 
     def run(self):
         build_temp = os.path.abspath(self.build_temp)
@@ -130,24 +131,29 @@ class build_clib(_build_clib):
             if e.errno != errno.EEXIST:
                 raise
 
-        if not os.path.exists(absolute('libsecp256k1/configure')):
+        d_path = os.path.join(build_temp, "libsecp256k1")
+        shutil.copytree(absolute("libsecp256k1"), d_path)
+
+        configure_path = os.path.join(d_path, "configure")
+
+        if not os.path.exists(configure_path):
             # configure script hasn't been generated yet
-            autogen = absolute('libsecp256k1/autogen.sh')
-            os.chmod(absolute(autogen), 0o755)
-            subprocess.check_call([autogen], cwd=absolute('libsecp256k1'))
+            autogen_path = os.path.join(d_path, "autogen.sh")
+            os.chmod(autogen_path, 0o755)
+            subprocess.check_call([autogen_path], cwd=d_path)
 
         for filename in [
-            'libsecp256k1/configure',
-            'libsecp256k1/build-aux/compile',
-            'libsecp256k1/build-aux/config.guess',
-            'libsecp256k1/build-aux/config.sub',
-            'libsecp256k1/build-aux/depcomp',
-            'libsecp256k1/build-aux/install-sh',
-            'libsecp256k1/build-aux/missing',
-            'libsecp256k1/build-aux/test-driver',
+            'configure',
+            'build-aux/compile',
+            'build-aux/config.guess',
+            'build-aux/config.sub',
+            'build-aux/depcomp',
+            'build-aux/install-sh',
+            'build-aux/missing',
+            'build-aux/test-driver',
         ]:
             try:
-                os.chmod(absolute(filename), 0o755)
+                os.chmod(os.path.join(d_path, filename), 0o755)
             except OSError as e:
                 # some of these files might not exist depending on autoconf version
                 if e.errno != errno.ENOENT:
@@ -155,8 +161,9 @@ class build_clib(_build_clib):
                     # else is wrong and we want to know about it
                     raise
 
+
         cmd = [
-            absolute('libsecp256k1/configure'),
+            "./configure",
             '--disable-shared',
             '--enable-static',
             '--disable-dependency-tracking',
@@ -172,13 +179,13 @@ class build_clib(_build_clib):
         ]
 
         log.debug('Running configure: {}'.format(' '.join(cmd)))
-        subprocess.check_call(cmd, cwd=build_temp)
+        subprocess.check_call(cmd, cwd=d_path)
 
-        subprocess.check_call([MAKE], cwd=build_temp)
-        subprocess.check_call([MAKE, 'install'], cwd=build_temp)
+        subprocess.check_call([MAKE], cwd=d_path)
+        subprocess.check_call([MAKE, 'install'], cwd=d_path)
 
-        self.build_flags['include_dirs'].extend(build_flags('libsecp256k1', 'I', build_temp))
-        self.build_flags['library_dirs'].extend(build_flags('libsecp256k1', 'L', build_temp))
+        self.build_flags['include_dirs'].extend(build_flags('libsecp256k1', 'I', d_path))
+        self.build_flags['library_dirs'].extend(build_flags('libsecp256k1', 'L', d_path))
 
 
 class build_ext(_build_ext):
@@ -225,46 +232,8 @@ else:
 
 
 setup(
-    name='electrumsv-secp256k1',
-    version='0.9.5',
-
-    description='Cross-platform Python libsecp256k1 for ElectrumSV',
-    long_description=open('README.rst', 'r').read(),
-    author='Roger Taylor',
-    author_email='roger.taylor.email@gmail.com',
-    maintainer='Roger Taylor',
-    maintainer_email='roger.taylor.email@gmail.com',
-    url='https://github.com/electrumsv/electrumsv-secp256k1',
-    download_url='https://github.com/electrumsv/electrumsv-secp256k1',
-    license='MIT/Apache-2.0',
-
-    install_requires=['cffi>=1.3.0'],
-
     packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1',)),
-
     distclass=Distribution,
     zip_safe=False,
-
-    keywords=(
-        'secp256k1',
-        'crypto',
-        'elliptic curves',
-        'bitcoin',
-        'bitcoin-sv',
-        'bitcoin sv',
-    ),
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'License :: OSI Approved :: Apache Software License',
-        'Natural Language :: English',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: Implementation :: CPython',
-        'Topic :: Software Development :: Libraries',
-        'Topic :: Security :: Cryptography',
-    ],
     **setup_kwargs
 )

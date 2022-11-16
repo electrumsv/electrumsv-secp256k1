@@ -4,8 +4,14 @@ set -e -x
 
 echo "deploy BUILD_SOURCESDIRECTORY=$BUILD_SOURCESDIRECTORY"
 
+if [[ "$AGENT_OS" == "Darwin" ]]; then
+    # This will compile a universal2 wheel for MacOS if we do not force the arch. The reason we
+    # force the arch is that the gmp library is installed by brew, and it appears to lack arm64
+    # support so delocate errors`.
+    export ARCHFLAGS="-arch x86_64"
+fi
+
 pip install .
-# python setup.py install
 
 # remove any left over files from previous steps
 rm -rf build dist
@@ -20,18 +26,15 @@ if [[ "$AGENT_OS" == "Linux" ]]; then
         .azure-pipelines/build_windows_wheels.sh
     fi
 elif [[ "$AGENT_OS" == "Darwin" ]]; then
-    for AZPYPATH in $AZPY311_PYTHONLOCATION $AZPY310_PYTHONLOCATION $AZPY39_PYTHONLOCATION $AZPY38_PYTHONLOCATION $AZPY37_PYTHONLOCATION; do
+    for AZPYPATH in $AZPY311_PYTHONLOCATION $AZPY310_PYTHONLOCATION $AZPY39_PYTHONLOCATION $AZPY38_PYTHONLOCATION; do
         # Make sure we can build and "fix" the wheel.
         $AZPYPATH/python -m pip install delocate wheel --disable-pip-version-check
         # Create directories for the built and fixed wheels.
         mkdir dist_wheels/ fixed_wheels/
         # Build the wheel for the local OS.
-        echo "running pip wheel"
         $AZPYPATH/python -m pip wheel . --wheel-dir dist_wheels/
-        echo "running delocate-wheel"
         # Make the wheel relocatable to another OS.
         $AZPYPATH/bin/delocate-wheel \
-            --check-archs \
             --wheel-dir fixed_wheels/ \
             --verbose \
             dist_wheels/electrumsv_secp256k1*.whl
