@@ -63,7 +63,7 @@ jobs:
     LINUX_TARGET: win64
 - job: BuildMacOSWheels
   pool:
-    vmImage: 'macOS-10.15'
+    vmImage: 'macOS-latest'
   steps:
   - template: install-python.yml
   - template: prepare-macos-environment.yml

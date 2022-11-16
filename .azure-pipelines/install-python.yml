@@ -27,3 +27,10 @@ steps:
     addToPath: true
     architecture: x64
   # Outputs to: AZPY310_PYTHONLOCATION
+- task: UsePythonVersion@0
+  name: AzPy311
+  inputs:
+    versionSpec: 3.11
+    addToPath: true
+    architecture: x64
+  # Outputs to: AZPY311_PYTHONLOCATION

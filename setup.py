@@ -226,7 +226,7 @@ else:
 
 setup(
     name='electrumsv-secp256k1',
-    version='0.9.4',
+    version='0.9.5',
 
     description='Cross-platform Python libsecp256k1 for ElectrumSV',
     long_description=open('README.rst', 'r').read(),

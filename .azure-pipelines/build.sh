@@ -19,7 +19,7 @@ if [[ "$AGENT_OS" == "Linux" ]]; then
         .azure-pipelines/build_windows_wheels.sh
     fi
 elif [[ "$AGENT_OS" == "Darwin" ]]; then
-    for AZPYPATH in $AZPY310_PYTHONLOCATION $AZPY39_PYTHONLOCATION $AZPY38_PYTHONLOCATION $AZPY37_PYTHONLOCATION; do
+    for AZPYPATH in $AZPY311_PYTHONLOCATION $AZPY310_PYTHONLOCATION $AZPY39_PYTHONLOCATION $AZPY38_PYTHONLOCATION $AZPY37_PYTHONLOCATION; do
         # Make sure we can build and "fix" the wheel.
         $AZPYPATH/python -m pip install delocate wheel
         # Create directories for the built and fixed wheels.
