@@ -1,10 +1,10 @@
-# coincurve
+# electrumsv-secp256k1 (was coincurve)
 
 | | |
 | --- | --- |
-| CI/CD | [![CI - Test](https://github.com/ofek/coincurve/actions/workflows/build.yml/badge.svg)](https://github.com/ofek/coincurve/actions/workflows/build.yml) [![CI - Coverage](https://img.shields.io/codecov/c/github/ofek/coincurve/master.svg?logo=codecov&logoColor=red)](https://codecov.io/github/ofek/coincurve) |
-| Docs | [![CI - Docs](https://github.com/ofek/coincurve/actions/workflows/docs.yml/badge.svg)](https://github.com/ofek/coincurve/actions/workflows/docs.yml) |
-| Package | [![PyPI - Version](https://img.shields.io/pypi/v/coincurve.svg?logo=pypi&label=PyPI&logoColor=gold)](https://pypi.org/project/coincurve/) [![PyPI - Downloads](https://img.shields.io/pypi/dm/coincurve.svg?color=blue&label=Downloads&logo=pypi&logoColor=gold)](https://pypi.org/project/coincurve/) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/coincurve.svg?logo=python&label=Python&logoColor=gold)](https://pypi.org/project/coincurve/) |
+| CI/CD | [![CI - Test](https://github.com/electrumsv/electrumsv-secp256k1/actions/workflows/build.yml/badge.svg)](https://github.com/electrumsv/electrumsv-secp256k1/actions/workflows/build.yml) [![CI - Coverage](https://img.shields.io/codecov/c/github/electrumsv/electrumsv-secp256k1/master.svg?logo=codecov&logoColor=red)](https://codecov.io/github/electrumsv/electrumsv-secp256k1) |
+| Docs | [![CI - Docs](https://github.com/electrumsv/electrumsv-secp256k1/actions/workflows/docs.yml/badge.svg)](https://github.com/electrumsv/electrumsv-secp256k1/actions/workflows/docs.yml) |
+| Package | [![PyPI - Version](https://img.shields.io/pypi/v/electrumsv-secp256k1.svg?logo=pypi&label=PyPI&logoColor=gold)](https://pypi.org/project/electrumsv-secp256k1/) [![PyPI - Downloads](https://img.shields.io/pypi/dm/electrumsv-secp256k1.svg?color=blue&label=Downloads&logo=pypi&logoColor=gold)](https://pypi.org/project/electrumsv-secp256k1/) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/electrumsv-secp256k1.svg?logo=python&label=Python&logoColor=gold)](https://pypi.org/project/electrumsv-secp256k1/) |
 | Meta | [![code style - black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![types - Mypy](https://img.shields.io/badge/types-Mypy-blue.svg)](https://github.com/ambv/black) [![imports - isort](https://img.shields.io/badge/imports-isort-ef8336.svg)](https://github.com/pycqa/isort) [![License - MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-9400d3.svg)](https://spdx.org/licenses/) [![GitHub Sponsors](https://img.shields.io/github/sponsors/ofek?logo=GitHub%20Sponsors&style=social)](https://github.com/sponsors/ofek) |
 
 -----
