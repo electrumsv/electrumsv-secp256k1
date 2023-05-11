@@ -5,10 +5,10 @@ on:
     tags:
     - v*
     branches:
-    - master
+    - master-electrumsv2
   pull_request:
     branches:
-    - master
+    - master-electrumsv2
 
 concurrency:
   group: build-${{ github.head_ref }}
