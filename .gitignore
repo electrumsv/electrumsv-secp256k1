@@ -6,12 +6,12 @@
 /.idea
 /.mypy_cache
 /.tox
-/coincurve.egg-info
+/electrumsv_secp256k1.egg-info
 /build
 /dist
 /site
 /wheelhouse
 /pip-wheel-metadata
 
-/coincurve/_libsecp256k1.py
-/coincurve/libsecp256k1.dll
+/electrumsv_secp256k1/_libsecp256k1.py
+/electrumsv_secp256k1/libsecp256k1.dll

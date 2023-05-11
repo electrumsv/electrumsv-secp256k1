@@ -243,7 +243,7 @@ class develop(_develop):
         _develop.run(self)
 
 
-package_data = {'coincurve': ['py.typed']}
+package_data = {'electrumsv_secp256k1': ['py.typed']}
 
 
 class BuildCFFIForSharedLib(_build_ext):
@@ -264,8 +264,8 @@ if has_system_lib():
     secp256k1_package = 'libsecp256k1'
 
     extension = Extension(
-        name='coincurve._libsecp256k1',
-        sources=[os.path.join('coincurve', '_libsecp256k1.c')],
+        name='electrumsv_secp256k1._libsecp256k1',
+        sources=[os.path.join('electrumsv_secp256k1', '_libsecp256k1.c')],
         # ABI?: py_limited_api=True,
     )
 
@@ -307,7 +307,7 @@ else:
                 return False
 
 
-        package_data['coincurve'].append('libsecp256k1.dll')
+        package_data['electrumsv_secp256k1'].append('libsecp256k1.dll')
         setup_kwargs = {}
 
     else:
@@ -319,7 +319,7 @@ else:
 
         setup_kwargs = dict(
             setup_requires=['cffi>=1.3.0', 'requests'],
-            ext_package='coincurve',
+            ext_package='electrumsv_secp256k1',
             cffi_modules=['_cffi_build/build.py:ffi'],
             cmdclass={
                 'build_clib': build_clib,
@@ -332,7 +332,7 @@ else:
         )
 
 setup(
-    name='coincurve',
+    name='electrumsv-secp256k1',
     version='19.0.0',
 
     packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1', 'tests')),

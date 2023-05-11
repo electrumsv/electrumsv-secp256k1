@@ -23,10 +23,8 @@ env:
     COINCURVE_IGNORE_SYSTEM_LIB
   CIBW_TEST_COMMAND: >
     python -c
-    "from coincurve import PrivateKey;
-    a=PrivateKey();
-    b=PrivateKey();
-    assert a.ecdh(b.public_key.format())==b.ecdh(a.public_key.format())
+    "from electrumsv_secp256k1 import SECP256K1_FLAGS_TYPE_MASK
+    assert SECP256K1_FLAGS_TYPE_MASK == 255
     "
   CIBW_TEST_SKIP: "*-macosx_arm64"
   CIBW_SKIP: >
