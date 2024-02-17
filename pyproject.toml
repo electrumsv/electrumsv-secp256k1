@@ -3,10 +3,10 @@ requires = ["setuptools>=61", "cffi>=1.3.0", "requests"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "coincurve"
+name = "electrumsv_secp256k1"
 version = "19.0.0"
 authors = [
-  { name="Ofek Lev", email="oss@ofek.dev" },
+  { name="rt121212121", email="roger.taylor.email@gmail.com" },
 ]
 description = "Cross-platform Python CFFI bindings for libsecp256k1"
 license = { file="LICENSE-MIT" }
@@ -37,11 +37,11 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/ofek/coincurve"
-"Bug Tracker" = "https://github.com/ofek/coincurve/issues"
+"Homepage" = "https://github.com/electrumsv/electrumsv-secp256k1"
+"Bug Tracker" = "https://github.com/electrumsv/electrumsv-secp256k1/issues"
 "Documentation" = "https://ofek.dev/coincurve/"
-"Issues" = "https://github.com/ofek/coincurve/issues"
-"Source" = "https://github.com/ofek/coincurve"
+"Issues" = "https://github.com/electrumsv/electrumsv-secp256k1/issues"
+"Source" = "https://github.com/electrumsv/electrumsv-secp256k1"
 
 [tool.pytest.ini_options]
 addopts = [
@@ -74,8 +74,8 @@ exclude = '''
 [tool.ruff]
 target-version = "py38"
 line-length = 120
-select = ["A", "B", "C", "E", "F", "I", "M", "N", "Q", "RUF", "S", "T", "U", "W", "YTT"]
-ignore = [
+lint.select = ["A", "B", "C", "E", "F", "I", "M", "N", "Q", "RUF", "S", "T", "U", "W", "YTT"]
+lint.ignore = [
   # Allow non-abstract empty methods in abstract base classes
   "B027",
   # Ignore McCabe complexity
@@ -85,7 +85,7 @@ ignore = [
   # Ignore checks for possible passwords
   "S105", "S106", "S107",
 ]
-unfixable = [
+lint.unfixable = [
   # Don't touch unused imports
   "F401",
 ]
@@ -93,13 +93,13 @@ extend-exclude = [
   "_cffi_build/compose_cffi_files.py",
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["electrumsv_secp256k1"]
 
-[tool.ruff.flake8-quotes]
+[tool.ruff.lint.flake8-quotes]
 inline-quotes = "single"
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "setup.py" = ["B", "C", "I", "N", "U"]
 # Tests can use assertions
 "tests/*" = ["S101"]

@@ -1,4 +1,4 @@
-from coincurve.flags import (
+from electrumsv_secp256k1.flags import (
     CONTEXT_FLAGS,
     CONTEXT_NONE,
     EC_COMPRESSED,
